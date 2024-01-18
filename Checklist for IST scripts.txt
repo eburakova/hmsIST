@@ -1,0 +1,66 @@
+CHANGE or CHECK in hmsist scripts:
+
+--lbdirect
+--sione
+--sitwo
+--sithree (if 4D)
+
+cd to the right directory
+
+
+	FID:
+	-- 1st line: file name 
+	-- 2nd line: -xN, -yN and -zN. For NUS: yN = 4 for 3D; 8 for 4D, zN = number of lines in NUS file; aN = 0 (for 4D). For US: number of complex points (always even)
+	-- 3rd line: xT = 1/2xN; yT, zT, aT = yN, zN, aN
+	-- for NUS -yMODE and -zMODE should be Real; for US should be set accordingly
+	-- Check SW
+	-- Check CAR
+	-- ndim = 3 for 3D and 4D
+
+If you don't want your files to be called "test%04d.***" make sure you changed the names everywhere! 
+Expression %04d tells the shell to incriment filename within the range 0000-9999, so that means you can have up to 10000 files of this type. 
+
+	FT1PHASE: 
+	-- set EM as $lbdirect
+	-- remove other weighting functions
+	-- set PS -p0 and -p1 to 0
+	-- Better don't use baseline correction
+
+	FT1:
+	-- set PS -p0 and -p1 according to those in FT1PHASE. For NUS: set p1 to 0 or 180!!!
+	
+	IST:
+	-- check path to the "istHMS" script and nuslist; make sure istHMS has executive permissions
+	-- number of iterations
+	-- when using reconstruction in parallel, check files "parallel" and "runistcluster3D (...4D)
+	-- -xN, -yN and -zN must be numbers of REAL points
+	-- -verb 1 is recommended
+
+	PH2PIPE:
+	--check you have "phf2pipe" script, it has permissions and the path to it is correct
+
+	PROJPHASE:
+	--set ZF size to $sione / $sitwo / $sithree accordingly
+	--Second: ZF -size 
+	--PS -p0 0 and -p1 to 0 
+	--Choose window functions
+	--Do not use baseline correction! (Remove the line '| nmrPipe  -fn POLY -auto -ord 5 -x1 25ppm -xn -20ppm   \' if it is there) 
+		---For it does not do anything useful. While sometimes it simply lifts some fragments over the baseline ehich makes your spectrum looks "  
+
+	FT2-, FT3- and FT4PHASE:
+	--set PS accordingly
+	--check that ZF is calling for the according variable
+	--Set window functions according to those chosen in PROJPHASE step
+	--Make sure there is no baseline correction
+	
+	FTALL:
+	--Set phase (PS) accordingly
+	--Check ZFs are calling for the corresponding variables
+	--Set window functions according to those chosen in PROJPHASE step
+	--Make sure there is no baseline correction
+	
+	CCPNMR:
+	--Reset the filename of your *.ft and *.ucsf files as you wish
+	--Make sure you have "pipe2ucsf" in the directory with all scripts OR you don't use it
+
+

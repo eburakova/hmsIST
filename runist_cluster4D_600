@@ -1,0 +1,33 @@
+#!/bin/csh 
+
+pwd 
+
+#set parameters here 
+
+set xn = 27
+set yn = 23
+set zn = 14
+set niter = 600
+
+#nothing to change below
+
+set F = $1
+
+set in = $F:t
+set out = $F:t:r.phf
+
+set tst = $F:t:r.tst
+
+if ( -f ft1_ist/${tst} ) then
+echo $in $out 
+
+else
+
+touch ft1_ist/${tst}
+
+
+echo $in $out 
+
+./../istHMS -dim 3 -ref 0 -user 1 -incr 1 -xN $xn -yN $yn -zN $zn  \
+    -itr $niter -verb 1 -ref 0 -vlist ./nuslist -i_mult 0.98 -e_mult 0.98 \
+    < ./ft1/${in} >! ./ft1_ist/${out}
